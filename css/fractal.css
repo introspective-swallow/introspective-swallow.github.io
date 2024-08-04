@@ -1,0 +1,137 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+
+.container {
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 2rem;
+}
+
+/* Navigation */
+.nav {
+    background: var(--secondary-color);
+    color: #fff;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav ul {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav ul li {
+    margin-left: 1rem;
+}
+
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.nav a:hover {
+    color: var(--primary-color);
+}
+
+/* Main content */
+.main-content {
+    margin-top: 6rem;
+    padding: 1rem 8rem;
+    max-height: max-content;
+    background-color: ghostwhite;
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+}
+
+
+
+h1, h2 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+
+/* Canvas with id fractalCanvas */
+/* on hover, mouse cursor changes to zoom in */
+.canvas-container {
+    position: relative;
+    width: 900px;
+    height: 600px;
+
+}
+
+#fractalCanvas {
+    border: 1px solid #000;
+}
+
+/* Place zoom in and zoom out buttons over the canvas on the bottom left part */
+/* Use relative positioning to place the buttons */
+
+.zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+    display: flex;
+    gap: 5px;
+}
+
+.zoom-btn {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #000;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.zoom-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.panning-indicator {
+    position: absolute;
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.panning-indicator.top { top: 20px; left: 50%; transform: translateX(-50%); }
+.panning-indicator.right { top: 50%; right: 5px; transform: translateY(-50%); }
+.panning-indicator.bottom { bottom: 5px; left: 50%; transform: translateX(-50%); }
+.panning-indicator.left { top: 50%; left: 5px; transform: translateY(-50%); }

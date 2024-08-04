@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fractal</title>
-    <link rel="stylesheet" href="../css/styles-glitch-classification.css">
+    <link rel="stylesheet" href="../css/fractal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -26,13 +27,20 @@
         </div>
     </nav>
 
-    <div class="main-content">
-        <div id="fractal-generation" class="container">
+    <div class="main-content container full-height-div">
             <h2>Mandelbrot set exploration</h2>
-            <p>Zoom in and out of the Mandelbrot set, use arrows to navigate it. </p>
-            <button onclick="zoomOut()">Zoom Out</button>
-            <canvas id="fractalCanvas" width="1200" height="800"></canvas>
-            <script src="../js/fractal.js"></script>
+            <p>Zoom in and out of the Mandelbrot set, use arrows to navigate it or click to zoom into what looks cool. </p>
+            <div class="canvas-container">
+                <canvas id="fractalCanvas" width="900px" height="600px"></canvas>
+                <div class="zoom-controls">
+                    <button onclick="zoomIn()" class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                    <button onclick="zoomOut()"  class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                </div>
+                <div class="panning-indicator top"><i class="fas fa-chevron-up"></i></div>
+                <div class="panning-indicator right"><i class="fas fa-chevron-right"></i></div>
+                <div class="panning-indicator bottom"><i class="fas fa-chevron-down"></i></div>
+                <div class="panning-indicator left"><i class="fas fa-chevron-left"></i></div>
+                <script src="../js/fractal-fast.js"></script>
         </div>
     </div>
 </body>
