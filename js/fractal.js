@@ -24,6 +24,14 @@ function hslToRgb(h, s, l) {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
+function interpolateColor(c1, c2, factor) {
+    const r1 = c1 & 0xFF, g1 = (c1 >> 8) & 0xFF, b1 = (c1 >> 16) & 0xFF;
+    const r2 = c2 & 0xFF, g2 = (c2 >> 8) & 0xFF, b2 = (c2 >> 16) & 0xFF;
+    const r = Math.round(r1 + factor * (r2 - r1));
+    const g = Math.round(g1 + factor * (g2 - g1));
+    const b = Math.round(b1 + factor * (b2 - b1));
+    return 0xFF000000 | (b << 16) | (g << 8) | r;
+}
 
 
 let VisualizationObject = {
@@ -36,6 +44,8 @@ let VisualizationObject = {
     xMax: 1,
     yMin: -1,
     yMax: 1,
+    renderingComplete : false, 
+    currentRenderingJob: null,
 
     init: function() {
         console.log("Initializing VisualizationObject");
@@ -60,19 +70,48 @@ let VisualizationObject = {
         this.data = new Uint32Array(this.buf);
 
 
-        this.updateCanvas();
+        this.startProgressiveRender();
         console.log("Initial updateCanvas called");
     },
 
-    updateCanvas: function() {
-        console.log("Updating canvas");
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        for (let i = 0; i < this.data.length; i++) {
+            this.data[i] = 0xFF000000; // Set all pixels to black
+        }
+    },
+
+    startProgressiveRender() {
+        this.renderingComplete = false;
+        //lowResImageData = this.createLowResSnapshot();
+        //this.ctx.clearRect(0, 0, this.width, this.height);
+        //this.ctx.drawImage(this.canvas, 0, 0, this.width / 4, this.height / 4, 0, 0, this.width, this.height);
+        //this.clearCanvas();
+        this.renderMandelbrot(8); // Start with 8x8 pixel blocks
+    },
+
+    createLowResSnapshot() {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = this.width / 4;
+        tempCanvas.height = this.height / 4;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.drawImage(this.canvas, 0, 0, this.width / 4, this.height / 4);
+        return tempCtx.getImageData(0, 0, this.width / 4, this.height / 4);
+    },
+
+    renderMandelbrot: function(step) {
+        console.log("Rendering Mandelbrot set");
+        const jobId = Math.random();
+        this.currentRenderingJob = jobId;
         
         const xScale = (this.xMax - this.xMin) / this.width;
         const yScale = (this.yMax - this.yMin) / this.height;
     
-        for (let py = 0; py < this.height; py++) {
+        for (let py = 0; py < this.height; py += step) {
             const y0 = this.yMin + py * yScale;
-            for (let px = 0; px < this.width; px++) {
+            for (let px = 0; px < this.width; px += step) {
+                if (this.currentRenderingJob !== jobId) return; // Stop if a new render has been requested
+
                 const x0 = this.xMin + px * xScale;
                 let x = 0;
                 let y = 0;
@@ -101,10 +140,47 @@ let VisualizationObject = {
                 }
             }
         }
+        if (step !== 1) {
+            // Interpolate colors
+            for (let py = 0; py < this.height; py++) {
+                for (let px = 0; px < this.width; px++) {
+                    if (px % step === 0 && py % step === 0) continue; // Skip already calculated pixels
+
+                    const x1 = Math.floor(px / step) * step;
+                    const y1 = Math.floor(py / step) * step;
+                    const x2 = Math.min(x1 + step, this.width - 1);
+                    const y2 = Math.min(y1 + step, this.height - 1);
+
+                    const q11 = this.data[y1 * this.width + x1];
+                    const q21 = this.data[y1 * this.width + x2];
+                    const q12 = this.data[y2 * this.width + x1];
+                    const q22 = this.data[y2 * this.width + x2];
+
+                    const fx = (px - x1) / step;
+                    const fy = (py - y1) / step;
+
+                    const top = interpolateColor(q11, q21, fx);
+                    const bottom = interpolateColor(q12, q22, fx);
+                    const final = interpolateColor(top, bottom, fy);
+
+                    this.data[py * this.width + px] = final;
+                }
+            }
+        }
     
         // Optimization: Bulk update of canvas
         this.imageData.data.set(this.buf8);
         this.ctx.putImageData(this.imageData, 0, 0);
+
+        setTimeout(() => {
+                // Schedule next render pass if needed
+            if (step > 1 && this.currentRenderingJob === jobId) {
+                // Wait one second before trying to render the next step
+                requestAnimationFrame(() => this.renderMandelbrot(1));
+            } else {
+                this.renderingComplete = true;
+            }
+        }, 200);
     }
         
 };
@@ -115,12 +191,12 @@ zoomOut = function() {
     let width = VisualizationObject.xMax - VisualizationObject.xMin;
     let height = VisualizationObject.yMax - VisualizationObject.yMin;
 
-    VisualizationObject.xMin -= width * zoomFactor / 2;
-    VisualizationObject.xMax += width * zoomFactor / 2;
-    VisualizationObject.yMin -= height * zoomFactor / 2;
-    VisualizationObject.yMax += height * zoomFactor / 2;
+    VisualizationObject.xMin -= width * (zoomFactor-1) / 2;
+    VisualizationObject.xMax += width * (zoomFactor-1) / 2;
+    VisualizationObject.yMin -= height * (zoomFactor-1) / 2;
+    VisualizationObject.yMax += height * (zoomFactor-1) / 2;
 
-    VisualizationObject.updateCanvas();
+    VisualizationObject.startProgressiveRender();
 }
 
 // Initialize the simulation when the page loads
@@ -155,7 +231,7 @@ document.getElementById('fractalCanvas').addEventListener('click', function(even
     VisualizationObject.yMin = yMin;
     VisualizationObject.yMax = yMax;
     
-    VisualizationObject.updateCanvas();
+    VisualizationObject.startProgressiveRender();
 });
 
 // Allow using the arrow keys to move the graph
@@ -164,25 +240,55 @@ document.addEventListener('keydown', function(event) {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(event.key) > -1) {
         // Prevent the default scrolling behavior
         event.preventDefault();
-        let step = 0.1 * (VisualizationObject.xMax - VisualizationObject.xMin);
+        let stepX = 0.1 * (VisualizationObject.xMax - VisualizationObject.xMin);
+        let stepY = 0.1 * (VisualizationObject.yMax - VisualizationObject.yMin);
+
         switch (event.key) {
             case 'ArrowUp':
-                VisualizationObject.yMin -= step;
-                VisualizationObject.yMax -= step;
+                VisualizationObject.yMin -= stepY;
+                VisualizationObject.yMax -= stepY;
                 break;
             case 'ArrowDown':
-                VisualizationObject.yMin += step;
-                VisualizationObject.yMax += step;
+                VisualizationObject.yMin += stepY;
+                VisualizationObject.yMax += stepY;
                 break;
             case 'ArrowLeft':
-                VisualizationObject.xMin -= step;
-                VisualizationObject.xMax -= step;
+                VisualizationObject.xMin -= stepX;
+                VisualizationObject.xMax -= stepX;
                 break;
             case 'ArrowRight':
-                VisualizationObject.xMin += step;
-                VisualizationObject.xMax += step;
+                VisualizationObject.xMin += stepX;
+                VisualizationObject.xMax += stepX;
                 break;
         }
-        VisualizationObject.updateCanvas();
+        VisualizationObject.startProgressiveRender();
     }
 });
+
+// Zoom out on pressing -
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === '-') {
+        zoomOut();
+    }
+}
+);
+
+// Zoom in on pressing +
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === '+') {
+        let zoomFactor = 2;
+    
+        let width = VisualizationObject.xMax - VisualizationObject.xMin;
+        let height = VisualizationObject.yMax - VisualizationObject.yMin;
+    
+        VisualizationObject.xMin += width * (zoomFactor-1) / 4;
+        VisualizationObject.xMax -= width * (zoomFactor-1) / 4;
+        VisualizationObject.yMin += height * (zoomFactor-1) / 4;
+        VisualizationObject.yMax -= height * (zoomFactor-1) / 4;
+        console.log(VisualizationObject.xMin, VisualizationObject.xMax, VisualizationObject.yMin, VisualizationObject.yMax);
+        VisualizationObject.startProgressiveRender();
+    }
+}
+);
