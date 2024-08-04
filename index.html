@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Personal Website</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+</head>
+
+<body onload="navigateSection()">
+    <nav class="nav">
+        <div class="container">
+            <h1>Your Name</h1>
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('projects')">Projects</a></li>
+                <li><a href="#" onclick="showSection('about')">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div id="home" class="container">
+            <h1>Welcome to My Digital Playground</h1>
+            <p>Explore the intersection of science, code, and creativity. Here, you'll find a collection of my projects, experiments, and musings.</p>
+            <h2>Featured Projects</h2>
+            <ul>
+                <li><a href="#" onclick="showSection('magnetic-simulation')">Magnetic Field Simulation</a></li>
+                <li><a href="#">Project Quantum Leap</a></li>
+                <li><a href="#">The AI Whisperer</a></li>
+            </ul>
+        </div>
+
+        <div id="projects" class="container">
+            <h2>My Projects</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Magnetic Field Simulation</h3>
+                    <p>Visualize and interact with magnetic fields in real-time.</p>
+                    <a href="projects/magnetic-simulation.html">Explore</a>
+                </div>
+                <div class="project-card">
+                    <h3>Future Project</h3>
+                    <p>Exciting things coming soon!</p>
+                    <a href="#">Coming Soon</a>
+                </div>
+                <div class="project-card">
+                    <h3>Future Project</h3>
+                    <p>More amazing ideas in the pipeline!</p>
+                    <a href="#">Coming Soon</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="about" class="container">
+            <h2>About Me</h2>
+            <p>
+                Greetings, fellow netizen! I'm a curious mind trapped in a human body, constantly oscillating between the realms of science, technology, and the occasional cat video. By day, I wrangle code and tame algorithms; by night, I ponder the mysteries of the universe (or binge-watch sci-fi series, same thing).
+            </p>
+            <p>
+                My superpower? Turning caffeine into code. My kryptonite? Unaligned divs and missing semicolons. When I'm not pushing pixels or pulling all-nighters, you can find me trying to explain quantum physics to my goldfish or attempting to break the land speed record for solving Rubik's cubes (current record: still can't solve one side).
+            </p>
+            <p>
+                Join me on this digital adventure as we explore the frontiers of technology, one bug at a time. Don't forget your towel!
+            </p>
+            <div class="social-links">
+                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
