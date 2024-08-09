@@ -14,14 +14,6 @@ function navigateSection(){
     showSection(sectionId || 'home');
 }
 
-
-function loadPage(){
-  navigateSection();
-  // Initialize with the first palette
-  applyPalette(currentPalette, 'light');
-}
-
-
 const palettes = {
   palette1: {
       light: {
@@ -198,6 +190,9 @@ document.getElementById('palette-selector').addEventListener('change', (e) => sw
 // Set up event listener for the theme toggle button
 document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
 
-// Initialize with the first palette
-applyPalette(currentPalette, 'light');
-switchPalette('palette1');
+function loadPage(){
+    navigateSection();
+    // Initialize with the first palette
+    applyPalette(currentPalette, 'light');
+  }
+  
