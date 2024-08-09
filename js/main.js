@@ -196,3 +196,4 @@ function loadPage(){
     applyPalette(currentPalette, 'light');
   }
   
+document.addEventListener('DOMContentLoaded', loadPage);
