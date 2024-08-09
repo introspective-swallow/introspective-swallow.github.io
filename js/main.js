@@ -184,16 +184,17 @@ function toggleDarkMode() {
 }
 
 
-// Set up event listeners for palette buttons
-document.getElementById('palette-selector').addEventListener('change', (e) => switchPalette(e.target.value));
-
-// Set up event listener for the theme toggle button
-document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
-
 function loadPage(){
     navigateSection();
     // Initialize with the first palette
     applyPalette(currentPalette, 'light');
+
+    // Set up event listeners for palette buttons
+    document.getElementById('palette-selector').addEventListener('change', (e) => switchPalette(e.target.value));
+
+    // Set up event listener for the theme toggle button
+    document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+
   }
   
 document.addEventListener('DOMContentLoaded', loadPage);
