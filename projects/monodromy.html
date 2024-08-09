@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numerical Algebraic Geometry Methods</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/monodromy.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+    </script>
+
+</head>
+<body>
+    <nav class="nav">
+        <div class="container">
+            <h1>Introspective swallow</h1>
+            <ul>
+                <li><a href="/?sec=home">Home</a></li>
+                <li><a href="/?sec=projects">Projects</a></li>
+                <li><a href="/?sec=about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="project-container">
+            <h1>Monodromy Strategies for Parametrized Sparse Systems
+            <a href="https://github.com/introspective-swallow/Numerical-Algebraic-Geometry-methods/" title="GitHub Repository" id="github-repo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                introspective-swallow/Numerical-Algebraic-Geometry-methods
+            </a></h1>
+            <p>This project implements and visualizes monodromy method algorithms from <a href="#reference">[1]</a> using the HomotopyContinuation Julia package. We focus on solving generic systems in a parametrized family of sparse polynomials using various strategies.</p>
+    
+            <h2>Overview</h2>
+            <p>Monodromy is a powerful technique in numerical algebraic geometry for finding solutions to polynomial systems. This project explores different strategies for applying monodromy to parametrized sparse systems.</p>
+
+            <h2>Homotopy Continuation for Polynomial Systems</h2>
+            <p>The monodromy method is rooted in the theory of homotopy continuation, a powerful technique for solving systems of polynomial equations. Let's begin by formalizing the problem:</p>
+            <p>Given a system of polynomials $F(x) = (f_1(x), \ldots, f_N(x))$, where $f_i \in \mathbb{C}[x_1, \ldots, x_n]$, we aim to find all solutions in the solution variety:</p>
+            <p>$V(F) = \{x \in \mathbb{C}^n | F(x) = 0\}$</p>
+            <p>The core idea of homotopy continuation is to construct a path from a system with known solutions to the target system. Let $G(x)$ be a system with at least as many solutions as $F(x)$. Under certain assumptions, we can construct a homotopy:</p>
+            <p>$H(x, t): H(x, 0) = F(x), H(x, 1) = G(x)$</p>
+            <p>such that all systems $H(x, t)$ for $t \in (0, 1]$ have the same number of isolated solutions.</p>
+
+            <h3>Tracking Solution Paths</h3>
+            <p>To track the solution paths $H(x^*(t), t) = 0$, where $x^*(1)$ is a solution of $G$, we differentiate with respect to $t$, obtaining a differential equation. This equation can be solved using predictor-corrector numerical methods.</p>
+            <p>The choice of the start system $G(x)$ and the homotopy $H(x, t)$ is crucial. We embed them in a parametrized family of polynomials. To ensure we find all solutions in $F$, we need a start polynomial with at least as many roots as $F$. This is where solution count bounds become important.</p>
+
+            <h2>Bounds on Solution Count</h2>
+
+            <h3>Bézout's Theorem</h3>
+            <p>The simplest bound is given by Bézout's theorem:</p>
+            <div class="theorem">
+                <span class="theorem-title">Theorem (Bézout):</span> If $f_1, \ldots, f_N$ have degrees $d_1, \ldots, d_N$, then the system has at most $d_1 \cdot \ldots \cdot d_N$ solutions.
+            </div>
+            <p>While simple, this bound is often too loose for sparse systems.</p>
+
+            <h3>BKK Bound</h3>
+            <p>For sparse polynomial systems, a tighter bound is given by the Bernstein-Khovanskii-Kushnirenko (BKK) theorem:</p>
+            <div class="theorem">
+                <span class="theorem-title">Theorem (Bernstein, 1975):</span> The root count on $(\mathbb{C}^*)^n$ of a Laurent polynomial family specified by supports $S_1, ..., S_n$ and parameterized by the coefficients of the corresponding monomials is the mixed volume $M(S_1, ..., S_n)$.
+            </div>
+            <p>This bound is particularly relevant for the monodromy method applied to sparse polynomial systems, as we typically search for solutions in $(\mathbb{C}^*)^n$.</p>
+
+            <h2>Monodromy Method</h2>
+            <p>The monodromy method differs from traditional homotopy continuation by starting from a known solution in the original system and attempting to find different solutions through carefully constructed paths.</p>
+
+            <h3>Setting</h3>
+            <p>We consider a generic polynomial system in a family of complex polynomial systems:</p>
+            <p>$F_p = (f^{(1)}_p, \ldots, f^{(N)}_p) = 0$, $f^{(i)}_p \in \mathbb{C}[p][x]$, $i = 1, \ldots, N$</p>
+            <p>with parameters $p \in \mathbb{C}^m$ and variables $x \in \mathbb{C}^n$ for some $m, n \in \mathbb{N}$.</p>
+            <p>We focus on linear parametric families of systems:</p>
+            <p>$f^{(i)}_p = \sum_j A_j(p)x^j$</p>
+            <p>where $A_j$ are affine functions, $j = (j_1, \ldots, j_n)$, and $x^j = x_1^{j_1} \cdot \ldots \cdot x_n^{j_n}$.</p>
+            <p>A subfamily of particular interest is sparse polynomial systems:</p>
+            <p>$f^{(i)}_p = \sum_j p_{i,j} x^j$</p>
+            <p>For a generic $p$, we have a nonempty finite set of solutions of $F_p(x) = 0$ with the same cardinality $d$, due to the sharpness of Bézout's theorem.</p>
+
+            <h3>Solution Variety and Base Space</h3>
+            <p>We define a parametrized linear variety of systems as the image of an affine linear map:</p>
+            <p>$\phi : \mathbb{C}^m \to \phi(\mathbb{C}^m)$<br>
+            $p \mapsto F_p$</p>
+            <p>The image $B := \phi(\mathbb{C}^m)$ is called the base space. $B$ is an irreducible variety because $\mathbb{C}^m$ is irreducible.</p>
+            <p>We then define the solution variety as:</p>
+            <p>$V = \{(F_p, x) \in B \times \mathbb{C}^m | F_p(x) = 0\}$</p>
+
+            <h3>Discriminant Variety and Path Connectedness</h3>
+            <p>The discriminant variety $D$ is the subset of systems in the base space with non-generic fibers. Its complement $B \setminus D$ is path-connected, which is crucial for the monodromy method. This is guaranteed by the following theorem:</p>
+            <div class="theorem">
+                <span class="theorem-title">Theorem (4.1.3 in [Sommese & Wampler, 2005]):</span> The complement of a proper quasiprojective algebraic subset $Y$ in an irreducible quasiprojective set $X$ is connected. If a quasiprojective set $X$ is connected, then $X$ is path connected.
+            </div>
+
+            <h3>Monodromy Group</h3>
+            <p>Consider the fundamental group $\pi_1(B \setminus D, p)$. For a system $F_p \in B \setminus D$, we can take a loop without branch points $\tau : [0, 1] \to B \setminus D$ such that $\tau(0) = \tau(1) = F_p$.</p>
+            <p>The projection $\pi : V \to B$ gives us a branched covering. For an element $x_i \in \pi^{-1}(F_p) = \{x_1, \ldots, x_d\}$, we can consider the unique corresponding lifting $\tilde{\tau}_i : [0, 1] \to V$ such that $\tilde{\tau}_i(0) = x_i$ and $\pi \circ \tau_i = \tilde{\tau}_i$.</p>
+            <p>We define the lifting correspondence:</p>
+            <p>$\phi : \pi_1(B \setminus D, F_p) \to \pi^{-1}(F_p)$</p>
+            <p>such that $\phi([\tau]) = \tilde{\tau}(1)$ for $\tilde{\tau}$ the lifting of a representative of $[\tau]$.</p>
+            <div class="theorem">
+                <span class="theorem-title">Theorem (54.4. [Munkres, 2000]):</span> Let $p : E \to B$ be a covering map; let $p(e_0) = b_0$. If $E$ is path connected, then the lifting correspondence $\phi$ is surjective.
+            </div>
+            <p>This theorem, combined with the path-connectedness of the solution variety, ensures that all roots in the fiber $\pi^{-1}(F_p)$ can be reached through the lifting of some loop starting at a known solution.</p>
+            <p>The monodromy group is then defined as the image of the homomorphism:</p>
+            <p>$\phi : \pi_1(B \setminus D, b_0) \to S_d$</p>
+            <p>where $S_d$ is the symmetric group on $d$ elements. This group acts transitively on the fiber $\pi^{-1}(F_p)$.</p>
+
+            <h2>Practical Implementation</h2>
+            <p>The theoretical framework translates into practical algorithms through careful construction of homotopy paths. The "Gamma trick" method is often employed to generate different correspondences between fibers:</p>
+            <p>For $\gamma_1, \gamma_2 \in \mathbb{C} \setminus \{0\}$, consider the linear segment homotopy:</p>
+            <p>$H'(t) = (1-t)\gamma_1 F_{p_1} + t\gamma_2 F_{p_2}, t \in [0, 1]$</p>
+            <p>This construction allows for the generation of diverse paths in the solution variety, increasing the chances of discovering new solutions through monodromy.</p>
+            
+            <h2>Visualization</h2>
+            <p>The static and dynamic incremental strategies can be visualized using a flower graph structure. These visualizations show the step-by-step progression of the homotopy graphs.</p>
+    
+                        
+            <div class="visualization-section">
+                <div class="gif-container">
+                <img src="../imgs/monodromy_static.gif" alt="Static Strategy Visualization">
+                <div class="gif-caption">
+                    Static Strategy: Demonstrates the step-by-step progression of the homotopy graph using a fixed structure.
+                </div>
+                </div>
+                <div class="gif-container">
+                <img src="../imgs/monodromy_dynamic.gif" alt="Dynamic Incremental Strategy Visualization">
+                <div class="gif-caption">
+                    Dynamic Incremental Strategy: Shows how the homotopy graph evolves and expands over time to find new solutions.
+                </div>
+                </div>
+            </div>
+    
+
+            <h2>References</h2>
+            <ol>
+                <li>Duff, T., Hill, C., Jensen, A., Lee, Leykin, A., Sommars, J. (2016). Solving polynomial systems via homotopy continuation and monodromy. arXiv:1609.08722.</li>
+                <li>Sommese, A. J., & Wampler, C. W. (2005). The Numerical Solution of Systems of Polynomials Arising in Engineering and Science. World Scientific.</li>
+                <li>Munkres, J. R. (2000). Topology (2nd ed.). Prentice Hall.</li>
+                <li>Bernstein, D. N. (1975). The number of roots of a system of equations. Functional Analysis and its Applications, 9(3), 183-185.</li>
+                <li>Bates, D. J., Hauenstein, J. D., Sommese, A. J., & Wampler, C. W. (2013). Numerically solving polynomial systems with Bertini (Vol. 25). SIAM.</li>
+            </ol>
+            
+        </div>
+
+        <script>
+            Prism.highlightAll();
+        </script>
+    </div>
+</body>
+</html>

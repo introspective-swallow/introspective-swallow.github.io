@@ -1,0 +1,91 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+
+.project-container {
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 2rem;
+}
+
+
+/* Main content */
+.main-content {
+    margin-top: 6rem;
+    padding: 1rem 8rem;
+    max-height: max-content;
+    background-color: ghostwhite;
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+}
+
+
+#github-repo {
+    text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: #f1f1f1;
+  color: #333;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Project specific styles */
+
+.theorem {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-left: 5px solid #2c3e50;
+}
+.theorem-title {
+    font-weight: bold;
+}
+
+/* Visualization section */
+.visualization-section {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+    width: 70%;
+  }
+  
+.gif-container {
+    width: 48%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+  }
+  
+.gif-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+.gif-caption {
+    padding: 1rem;
+    text-align: center;
+    font-style: italic;
+    color: #555;
+  }
+  
+@media (max-width: 768px) {
+.visualization-section {
+      flex-direction: column;
+    }
+.gif-container {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+  }

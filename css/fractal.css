@@ -1,21 +1,4 @@
-:root {
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --background-color: #ecf0f1;
-    --text-color: #34495e;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -23,49 +6,13 @@ body {
 }
 
 
-.container {
+.project-container {
     max-width: 100%;
     margin: auto;
     overflow: hidden;
     padding: 0 2rem;
 }
 
-/* Navigation */
-.nav {
-    background: var(--secondary-color);
-    color: #fff;
-    padding: 1rem 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1;
-}
-
-.nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav ul {
-    display: flex;
-    list-style-type: none;
-}
-
-.nav ul li {
-    margin-left: 1rem;
-}
-
-.nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-}
-
-.nav a:hover {
-    color: var(--primary-color);
-}
 
 /* Main content */
 .main-content {
@@ -80,24 +27,16 @@ body {
 
 
 
-h1, h2 {
-    margin-bottom: 1rem;
-    color: var(--secondary-color);
-}
+/* Canvas style */
 
-
-/* Canvas with id fractalCanvas */
-/* on hover, mouse cursor changes to zoom in */
-.canvas-container {
-    position: relative;
-    width: 900px;
-    height: 600px;
-
-}
-
-#fractalCanvas {
+.canvas {
     border: 1px solid #000;
 }
+
+
+/* Project specific */
+
+
 
 /* Place zoom in and zoom out buttons over the canvas on the bottom left part */
 /* Use relative positioning to place the buttons */

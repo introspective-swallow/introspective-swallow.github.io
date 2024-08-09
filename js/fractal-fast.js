@@ -15,8 +15,8 @@ function init() {
     ctx = canvas.getContext('2d');
 
     const rect = canvas.getBoundingClientRect();
-    width = rect.width;
-    height = rect.height;
+    width = Math.round(rect.width);
+    height = Math.round(rect.height);
     proportion = width / height;
 
     console.log(`Canvas size: ${width} x ${height}`);
@@ -267,7 +267,7 @@ document.getElementById('fractalCanvas').addEventListener('mousemove', function(
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    console.log(x, y);
+
     // Check if the mouse is inside the canvas
     if (x < 0 || x >= width || y < 0 || y >= height) return;
 
