@@ -6,7 +6,7 @@
     <title>Glitch classification</title>
 
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/styles-glitch-classification.css">
+    <link rel="stylesheet" href="../css/glitch-classification.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
+    <script src="../js/main-projects.js"></script>
 </head>
 <body>
     <nav class="nav">
@@ -30,14 +31,163 @@
                 <li><a href="/?sec=about">About</a></li>
             </ul>
         </div>
+        <select id="palette-selector">
+            <option value="palette1" class="palette-option" title="Monochromatic Blue">🐳</option>
+            <option value="palette2" class="palette-option" title="Minimalist Grayscale">🐘</option>
+            <option value="palette3" class="palette-option" title="Earthy Tones">🌳</option>
+            <option value="palette4" class="palette-option" title="Vibrant Colors">🤖</option>
+            <option value="palette5" class="palette-option" title="Neon Minimalism">🔦</option>
+            <option value="palette6" class="palette-option" title="Retro Futurism">🚀</option>
+        </select>
+        <button id="theme-toggle">🌙</button>
     </nav>
 
     <div class="main-content">
         <div id="glitch-classification" class="container">
-            <h1>Glitch Classification</h1>
-            <p>Classification of glitches in Gravitational Wave Data, elaborated for my final degree thesis in Mathematics.</p>
-            <img src="../imgs/glitches_classes.png" alt=""> 
+            <h1>Glitch Classification using Convolutional Networks
+            <a href="https://github.com/introspective-swallow/Gravitational-Waves-Glitch-Classification" title="GitHub Repository" id="github-repo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                introspective-swallow/Gravitational-Waves-Glitch-Classification
+            </a></h1>
+            </h1>
 
+            <h2>1. Introduction</h2>
+            <p>
+                The detection of gravitational waves has revolutionized our understanding of the universe. However, the data obtained from detectors like LIGO and Virgo contain various types of noise, including transient noises called glitches. These glitches can be confused with actual gravitational wave signals, making their classification an essential task in gravitational wave astronomy.
+            </p>
+            <p>
+                This document summarizes the use of Convolutional Neural Networks (CNNs) for classifying glitches in gravitational wave data. We'll explore various CNN architectures, data preprocessing techniques, and evaluation methods used in this field.
+            </p>
+
+            <h2>2. Gravitational Waves and Detectors</h2>
+            <p>
+                Gravitational waves are distortions in spacetime caused by accelerating masses. They were first predicted by Einstein's theory of general relativity and were directly observed for the first time in 2015 by LIGO.
+            </p>
+            <p>
+                Detectors like LIGO and Virgo use laser interferometry to measure these tiny distortions. The detectors are extremely sensitive, capable of measuring changes in distance as small as 10^-19 meters.
+            </p>
+            <img src="../imgs/virgo-optical-layout.png" alt="Diagram of a laser interferometer gravitational wave detector">
+            <p><em>Figure 1: Schematic of a laser interferometer gravitational wave detector</em></p>
+
+            <h2>3. Glitches and Their Classification</h2>
+            <p>
+                Glitches are short-duration noise transients in the detector data. They can have various causes, including environmental and instrumental factors. Classifying these glitches is crucial for:
+            </p>
+            <ul>
+                <li>Improving the quality of gravitational wave detection</li>
+                <li>Understanding and mitigating sources of noise in the detectors</li>
+                <li>Distinguishing between real gravitational wave signals and noise</li>
+            </ul>
+            <p>
+                Machine learning techniques, particularly CNNs, have proven effective in classifying these glitches based on their time-frequency representations (spectrograms).
+            </p>
+
+            <h2>3. Signal Processing Techniques</h2>
+            <p>
+                Before applying machine learning models to gravitational wave data, various signal processing techniques are employed to prepare and analyze the data. Key concepts include:
+            </p>
+            <ul>
+                <li>Fourier Transform: Used to analyze the frequency content of signals</li>
+                <li>Power Spectral Density (PSD): Measures the distribution of power across frequencies</li>
+                <li>Spectrograms: Time-frequency representations of signals</li>
+                <li>Q-transform: An alternative to Fourier Transform for analyzing signals with varying time-frequency resolution</li>
+            </ul>
+            <p>
+                One crucial preprocessing step is whitening, which equalizes the noise across all frequencies, making glitches more visible:
+            </p>
+            <img src="../imgs/blip_strain.png" alt="Example of whitening applied to gravitational wave data">
+            <p><em>Figure 3: Effect of whitening on gravitational wave data containing a glitch</em></p>
+
+
+            <h2>4. Convolutional Neural Networks for Glitch Classification</h2>
+            <p>
+                CNNs are a type of deep learning model particularly well-suited for image classification tasks. In the context of glitch classification, spectrograms of the detector data are treated as images, allowing CNNs to learn relevant features for classification.
+            </p>
+            <p>
+                Key aspects of using CNNs for glitch classification include:
+            </p>
+            <ul>
+                <li>Data preprocessing: Converting time series data to spectrograms</li>
+                <li>Network architecture: Designing appropriate CNN structures</li>
+                <li>Training strategies: Handling class imbalance, data augmentation</li>
+                <li>Evaluation metrics: Using appropriate measures like F1-score</li>
+            </ul>
+            <img src="../imgs/glitches_classes.png" alt="Example of glitch spectrograms">
+            <p><em>Figure 2: Examples of spectrograms for different glitch classes</em></p>
+            
+            <h2>6. CNN Architectures for Glitch Classification</h2>
+            <p>
+                Several CNN architectures have been applied to glitch classification, including:
+            </p>
+            <ul>
+                <li>VGG-like models: Simple architectures with repeated convolutional layers</li>
+                <li>ResNet: Utilizing skip connections for training deeper networks</li>
+                <li>Multi-view fusion models: Combining information from multiple time scales</li>
+                <li>Attention-based models: Focusing on the most relevant parts of the input</li>
+            </ul>
+            <img src="../imgs/GS_CNN_parallel.png" alt="Diagram of a multi-view fusion CNN architecture">
+            <p><em>Figure 4: Example of a multi-view fusion CNN architecture for glitch classification</em></p>
+
+            <h2>7. Training Strategies and Challenges</h2>
+            <p>
+                Training effective glitch classification models presents several challenges:
+            </p>
+            <ul>
+                <li>Class imbalance: Some glitch types are much rarer than others</li>
+                <li>Limited labeled data: Obtaining large, labeled datasets can be challenging</li>
+                <li>Data augmentation: Techniques to artificially increase the dataset size</li>
+                <li>Transfer learning: Utilizing pre-trained models on large image datasets</li>
+            </ul>
+            <p>
+                Strategies to address these challenges include:
+            </p>
+            <ul>
+                <li>Weighted loss functions: Giving more importance to underrepresented classes</li>
+                <li>Focal loss: Focusing on hard-to-classify examples</li>
+                <li>Image augmentation: Applying transformations like rotation and color changes</li>
+                <li>Fine-tuning pre-trained models: Adapting models trained on large datasets like ImageNet</li>
+            </ul>
+
+            <h2>8. Evaluation Metrics</h2>
+            <p>
+                Proper evaluation of glitch classification models is crucial. Common metrics include:
+            </p>
+            <ul>
+                <li>Accuracy: Overall correct classification rate</li>
+                <li>F1-score: Harmonic mean of precision and recall</li>
+                <li>Confusion matrix: Detailed breakdown of classifications by class</li>
+            </ul>
+            <p>
+                For imbalanced datasets, macro-averaged F1-score is often preferred as it gives equal weight to all classes regardless of their frequency.
+            </p>
+            <img src="../imgs/conf_matrix_resnet18.png" alt="Example confusion matrix for glitch classification">
+            <p><em>Figure 5: Confusion matrix for a glitch classification model</em></p>
+
+            <h2>9. Results and Future Directions</h2>
+            <p>
+                Recent studies have shown promising results in glitch classification using CNNs:
+            </p>
+            <ul>
+                <li>High accuracy (>95%) on many glitch types</li>
+                <li>Improved performance using multi-view and attention-based models</li>
+                <li>Successful application to real detector data from LIGO and Virgo</li>
+            </ul>
+            <p>
+                Future directions in this field include:
+            </p>
+            <ul>
+                <li>Incorporating time-domain information alongside spectrograms</li>
+                <li>Exploring more advanced architectures like Vision Transformers</li>
+                <li>Developing models that can adapt to new glitch types</li>
+                <li>Integrating glitch classification into real-time gravitational wave detection pipelines</li>
+            </ul>
+
+            <h2>Conclusion</h2>
+            <p>
+                Glitch classification using CNNs has become an essential tool in gravitational wave astronomy. By accurately identifying and categorizing noise transients, these models contribute to improving the sensitivity and reliability of gravitational wave detectors. As the field advances, we can expect even more sophisticated techniques to emerge, further enhancing our ability to explore the universe through gravitational waves.
+            </p>
 
             <script src="../js/glitch-classification.js"></script>
         </div>

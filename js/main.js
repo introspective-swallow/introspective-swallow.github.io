@@ -161,8 +161,8 @@ const palettes = {
   }
 };
 
-let currentPalette = 'palette1';
-let isDarkMode = false;
+let currentPalette = 'palette6';
+let isDarkMode = true;
 
 function applyPalette(palette, mode) {
     const colors = palettes[palette][mode];
@@ -174,11 +174,13 @@ function applyPalette(palette, mode) {
 function switchPalette(palette) {
     console.log(palette);
     currentPalette = palette;
+    localStorage.setItem('palette', palette);
     applyPalette(currentPalette, isDarkMode ? 'dark' : 'light');
 }
 
 function toggleDarkMode() {
     isDarkMode = !isDarkMode;
+    localStorage.setItem('dark-mode', isDarkMode);
     applyPalette(currentPalette, isDarkMode ? 'dark' : 'light');
     document.getElementById('theme-toggle').textContent = isDarkMode ? '🌞' : '🌙';
 }
@@ -186,11 +188,25 @@ function toggleDarkMode() {
 
 function loadPage(){
     navigateSection();
-    // Initialize with the first palette
-    applyPalette(currentPalette, 'light');
+    selector = document.getElementById('palette-selector')
+
+    // Initialize with the first palette only if no palette is set
+    if (!localStorage.getItem('palette')) {
+        localStorage.setItem('palette', 'palette6');
+        localStorage.setItem('dark-mode', 'true');
+        console.log('Palette set to palette6');
+        selector.value = 'option6';
+        applyPalette(currentPalette, 'dark');
+    } else {
+        currentPalette = localStorage.getItem('palette');
+        isDarkMode = localStorage.getItem('dark-mode');
+        selector.value = currentPalette;
+        console.log('Palette loaded to ' + currentPalette);
+        applyPalette(currentPalette, isDarkMode ? 'dark' : 'light');
+    }
 
     // Set up event listeners for palette buttons
-    document.getElementById('palette-selector').addEventListener('change', (e) => switchPalette(e.target.value));
+    selector.addEventListener('change', (e) => switchPalette(e.target.value));
 
     // Set up event listener for the theme toggle button
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);

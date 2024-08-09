@@ -9,7 +9,6 @@ body {
 .project-container {
     max-width: 100%;
     margin: auto;
-    overflow: hidden;
     padding: 0 2rem;
 }
 
@@ -19,12 +18,10 @@ body {
     margin-top: 6rem;
     padding: 1rem 8rem;
     max-height: max-content;
-    background-color: ghostwhite;
     flex-direction: column;
     display: flex;
     height: 100%;
 }
-
 
 
 /* Canvas style */
@@ -33,6 +30,14 @@ body {
     border: 1px solid #000;
 }
 
+.canvas-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
 
 /* Project specific */
 

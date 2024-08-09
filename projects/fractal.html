@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -17,6 +19,8 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
+    <script src="../js/main-projects.js"></script>
 
 </head>
 <body>
@@ -29,13 +33,22 @@
                 <li><a href="/?sec=about">About</a></li>
             </ul>
         </div>
+        <select id="palette-selector">
+            <option value="palette1" class="palette-option" title="Monochromatic Blue">🐳</option>
+            <option value="palette2" class="palette-option" title="Minimalist Grayscale">🐘</option>
+            <option value="palette3" class="palette-option" title="Earthy Tones">🌳</option>
+            <option value="palette4" class="palette-option" title="Vibrant Colors">🤖</option>
+            <option value="palette5" class="palette-option" title="Neon Minimalism">🔦</option>
+            <option value="palette6" class="palette-option" title="Retro Futurism">🚀</option>
+        </select>
+        <button id="theme-toggle">🌙</button>
     </nav>
 
-    <div class="main-content container full-height-div">
+    <div class="main-content full-height-div">
             <h2>Mandelbrot set exploration</h2>
             <p>Zoom in and out of the Mandelbrot set, use arrows to navigate it or click to zoom into what looks cool. </p>
             <div class="canvas-container">
-                <canvas id="fractalCanvas" width="900px" height="600px"></canvas>
+                <canvas id="fractalCanvas" width="1200px" height="800px"></canvas>
                 <div class="zoom-controls">
                     <button onclick="zoomIn()" class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
                     <button onclick="zoomOut()"  class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>

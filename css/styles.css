@@ -89,13 +89,13 @@ body {
     padding: 2rem 0;
 }
 
-.main-content ul {
+ul#project_list {
     text-align: left;
     margin: auto;
     width: 50%;
 }
 
-.main-content li {
+#project_list li {
     list-style-type: disc;
     list-style-position: inside;
 }
